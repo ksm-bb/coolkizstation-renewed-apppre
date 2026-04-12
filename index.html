@@ -94,10 +94,6 @@
       </div>
     ));
 
-    // ✅ แก้ไข 3 จุดสำหรับ iOS Safari:
-    // 1. header card: overflow-hidden → overflow-visible (ป้องกัน clip animation)
-    // 2. wrapper div ของ h1: เพิ่ม py-1 overflow-visible
-    // 3. h1 + span: เพิ่ม willChange, WebkitTransform เพื่อ force GPU layer
     const Header = React.memo(({ isAdmin, setIsAdmin, setShowAuthModal, handleImageUpload, profileImage }) => (
       <div className="px-5 pt-6 pb-2 relative z-10">
         <div className="bg-white/40 backdrop-blur-md rounded-[32px] px-4 pt-5 pb-4 shadow-xl shadow-[#e9f4fa]/50 border border-white/50 flex items-center justify-between relative overflow-hidden group" style={{ minHeight: '88px' }}>
@@ -483,7 +479,10 @@
 
       const handleRenewSubmit = async () => {
         setIsSaving(true);
-        const updatedTask = { ...renewingTask, dueDate: newDueDate, status: 'done' };
+        
+        // แก้ไขตรงนี้: เลื่อนวันที่ไปรอบใหม่ และตั้งสถานะให้เป็น 'todo' เสมอ
+        const updatedTask = { ...renewingTask, dueDate: newDueDate, status: 'todo' };
+        
         setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
         setShowRenewModal(false);
         setRenewingTask(null);
@@ -926,6 +925,3 @@
   </script>
 </body>
 </html>
-
-
-
